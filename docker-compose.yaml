@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+
+    postgres:
+        container_name: custom_postgres_${USER:-anonymous}
+        build:
+            context: .
+            dockerfile: ./postgres/Dockerfile
+        image: postgres:${USER:-anonymous}
+        healthcheck:
+            test: ["CMD", "pg_isready", "-U", "postgres"]
+            interval: 5s
+            retries: 5
+        ports:
+            - 5499:5499
+        volumes:
+            - postgres_data_volume:/var/lib/postgresql/data
+        environment:
+            - PGPORT=5499
+            - POSTGRES_PASSWORD=LOL
+        deploy:
+            resources:
+                limits:
+                    cpus: '1.0'
+                    memory: 8G
+        networks:
+            - playing_network
+    minds-db:
+        container_name: custom_mindsdb_${USER:-anonymous}
+        build:
+            context: .
+            dockerfile: ./minds-db/Dockerfile
+        image: mindsdb:${USER:-anonymous}
+        ports:
+            - 47334:47334
+        volumes:
+            - minsdb_data_volume:/var/lib/postgresql/data
+        networks:
+            - playing_network
+
+
+volumes:
+    postgres_data_volume:
+
+networks:
+    playing_network:
+        name: custom_playing_network

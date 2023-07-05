@@ -1,4 +1,5 @@
 faker
 pandas
-psycopg2
 tqdm
+scikit-learn
+polars

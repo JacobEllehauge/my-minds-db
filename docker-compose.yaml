@@ -35,13 +35,13 @@ services:
         ports:
             - 47334:47334
         volumes:
-            - minsdb_data_volume:/var/lib/postgresql/data
+            - minsdb_data_volume:/root/mdb_storage
         networks:
             - playing_network
 
-
 volumes:
     postgres_data_volume:
+    minsdb_data_volume:
 
 networks:
     playing_network:
